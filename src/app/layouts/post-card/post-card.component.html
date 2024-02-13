@@ -1,0 +1,12 @@
+<div class="card shadow-effect post-card" [routerLink]="['/post',post.id]">
+    <img [src]="post.data.imagePath" [alt]="post.data.title" class="card-img-top"/>
+    <div class="card-body">
+        <small class="bg-light text-danger text-center">{{post.data.category.name}}</small>
+        <small class="bg-light text-success text-center ms-3">{{post.data.status}}</small>
+        <small class="bg-light text-info text-center ms-3">Views - {{post.data.views}}</small>
+
+        <h5 class="mt-1">{{post.data.title}}</h5>
+        <p>{{post.data.excerpt}}</p>
+        <small class="bg-light text-warning text-center">LAST UPDATED - {{post.data.createdAt | date}}</small>
+    </div>
+</div>

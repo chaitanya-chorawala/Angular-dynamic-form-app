@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center bg-light" id="navbarSupportedContent">
+            <ul class="navbar-nav" *ngFor="let route of routes">
+                <li class="nav-item ms-3"><a [routerLink]="route.routeKey" class="nav-link" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse.show">{{route.routeValue}}</a></li>
+                <!-- <li class="nav-item ms-3"><a href="#" class="nav-link">design</a></li>
+                <li class="nav-item ms-3"><a href="#" class="nav-link">inspiration</a></li>
+                <li class="nav-item ms-3"><a href="#" class="nav-link">sports</a></li>
+                <li class="nav-item ms-3"><a href="#" class="nav-link">politics</a></li>
+                <li class="nav-item ms-3"><a routerLink="/admin/dashboard" class="nav-link">Dashboard</a></li>
+                <li class="nav-item ms-3"><a routerLink="/admin/category" class="nav-link">Category</a></li> -->
+            </ul>
+        </div>
+        <button class="btn btn-secondary" *ngIf="isAdminRoute" (click)="logout()"><fa-icon
+                [icon]="faArrowRightFromBracket"></fa-icon> Logout</button>
+    </div>
+</nav>

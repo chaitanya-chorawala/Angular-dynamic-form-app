@@ -1,0 +1,165 @@
+<div class="container mb-4">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card shadow-effect bg-secondary-theme">
+        <div class="card-body text-center">
+          <h3 class="text-primary-theme">FORM DETAIL</h3>
+          <p>You can add person detail here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="contactForm">
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card shadow-effect">
+          <div class="card-header">
+            <h4 class="card-title">Main Person</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label>Name</label>
+                  <input type="text" class="form-control" formControlName="name" placeholder="*Name" />
+                  <div *ngIf="contactForm.get('name')?.hasError('required')" class="text-danger">Required field</div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label>Occupation</label>
+                  <input type="text" class="form-control" formControlName="occupation" placeholder="*Occupation" />
+                  <div *ngIf="contactForm.get('occupation')?.hasError('required')" class="text-danger">Required field</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label>DOB</label>
+                  <input type="date" class="form-control" formControlName="dob" placeholder="*DOB" />
+                  <div *ngIf="contactForm.get('dob')?.hasError('required')" class="text-danger">Required field</div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label>Age</label>
+                  <input type="text" class="form-control" formControlName="age" placeholder="*Age" />
+                  <div *ngIf="contactForm.get('age')?.hasError('required')" class="text-danger">Required field</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group mb-2">
+                  <label>Mobile No</label>
+                  <input type="text" class="form-control" formControlName="mobileNo" placeholder="*Mobile No" />
+                  <div *ngIf="contactForm.get('mobileNo')?.hasError('required')" class="text-danger">Required field</div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group mb-2">
+                  <label>Address</label>
+                  <textarea class="form-control" cols="30" rows="3" formControlName="address"
+                    placeholder="*Address"></textarea>
+                  <div *ngIf="contactForm.get('address')?.hasError('required')" class="text-danger">Required field</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div formArrayName="family">
+      <div *ngFor="let person of personArray().controls; let personIndex = index">
+        <div [formGroupName]="personIndex">
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div class="card shadow-effect">
+                <div class="card-header">
+                  <h4 class="card-title">Person {{(personIndex + 1)}}</h4>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group mb-2">
+                        <label>Relation With Main Person</label>
+                        <select class="form-select" formControlName="relationWithMainPerson">
+                          <option [selected]="true" value="">--SELECT--</option>
+                          <option value="Mother">Mother</option>
+                          <option value="Father">Father</option>
+                          <option value="Brother">Brother</option>
+                          <option value="Sister">Sister</option>
+                          <option value="Son">Son</option>
+                          <option value="Daughter">Daughter</option>
+                        </select>
+                        <!-- <input type="text" class="form-control" formControlName="relationWithMainPerson" placeholder="*Relation With Main Person" /> -->
+                        <div *ngIf="person.get('relationWithMainPerson')?.hasError('required')" class="text-danger">Required field</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group mb-2">
+                        <label>Name</label>
+                        <input type="text" class="form-control" formControlName="name" placeholder="*Name" />
+                        <div *ngIf="person.get('name')?.hasError('required')" class="text-danger">Required field</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group mb-2">
+                        <label>Occupation</label>
+                        <input type="text" class="form-control" formControlName="occupation" placeholder="*Occupation" />
+                        <div *ngIf="person.get('occupation')?.hasError('required')" class="text-danger">Required field</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group mb-2">
+                        <label>DOB</label>
+                        <input type="date" class="form-control" formControlName="dob" placeholder="*DOB" />
+                        <div *ngIf="person.get('dob')?.hasError('required')" class="text-danger">Required field</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group mb-2">
+                        <label>Age</label>
+                        <input type="text" class="form-control" formControlName="age" placeholder="*Age" />
+                        <div *ngIf="person.get('age')?.hasError('required')" class="text-danger">Required field</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button type="button" class="btn btn-danger px-4" (click)="removePerson(personIndex)">
+                    REMOVE PERSON
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4 mb-4">
+      <div class="col-md-12 text-center">
+        <div class="btn-group" role="group">
+        <button type="button" class="btn btn-success px-4 btn-theme" (click)="addPerson()">
+          ADD PERSON
+        </button>
+        <button type="submit" class="btn btn-secondary bg-theme px-4 btn-theme-primary w-100" [disabled]="contactForm.invalid">
+          SUBMIT FORM<br>
+          <span>Total Person: {{personArray().length}}</span>
+        </button>
+        <button type="button" class="btn btn-warning px-4 btn-theme" (click)="resetForm()">
+          CLEAR FORM
+        </button>
+      </div>
+      </div>
+    </div>
+  </form>
+</div>

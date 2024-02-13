@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="row mb-2 gy-2">
+        <div class="col-md-12">
+            <div class="card shadow-effect bg-secondary-theme">
+                <div class="card-body text-center">
+                    <h3 class="text-primary-theme">ALL FORMS</h3>
+                    <p>From here you can manage your forms.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card shadow-effect">
+                <div class="card-body">
+                    <h4 class="text-center mb-2">FORM LIST</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Mobile No</th>
+                                    <th>Email</th>
+                                    <th width="40%">Message</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="contacts$ | async as contacts; else loading">
+                                <ng-container *ngIf="contacts.length; else noItems">
+
+                                    <tr *ngFor="let contact of contacts; index as i">
+                                        <td>{{i+1}}</td>
+                                        <td>{{contact.data.name}}</td>
+                                        <td>{{contact.data.mobileNo}}</td>
+                                        <td>{{contact.data.email}}</td>
+                                        <td>{{contact.data.message}}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    (click)="onDelete(contact.id)">Delete</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <ng-template #noItems>
+                                    <tr>
+                                        <td colspan="12" class="text-center">No records found :(</td>
+                                    </tr>
+                                </ng-template>
+
+                            </tbody>
+                            <ng-template #loading>
+                                <div class="spinner-border" role="status"></div>
+                            </ng-template>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
