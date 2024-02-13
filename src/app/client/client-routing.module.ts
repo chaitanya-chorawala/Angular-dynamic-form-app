@@ -6,10 +6,10 @@ import { ClientComponent } from './client.component';
 const routes: Routes = [
   {
     path: ''
-    , title: 'Home | Blog App'
+    , title: 'Home | Forms App'
     , component: ClientComponent
     , children: [
-      { path: 'home', title: 'Home | Blog App', component: ContactUsComponent },
+      { path: 'home', title: 'Home | Forms App', component: ContactUsComponent },
       { path: '', redirectTo: '/home', pathMatch: 'full' }
     ]
   },
