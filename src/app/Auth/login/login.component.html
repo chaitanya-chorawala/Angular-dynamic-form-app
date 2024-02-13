@@ -1,0 +1,23 @@
+<div class="container-fluid app-body-without-nav h-100">
+  <div class="row justify-content-center h-100">
+      <div class="col-md-6 grid">
+          <div class="card p-3 bg-secondary-theme shadow-effect">
+              <div class="card-body">
+                  <div class="text-center">
+                      <h3 class="text-primary-theme">Login</h3>
+                      <p>Please login to your admin account to manage post</p>
+                  </div>
+                  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                      <div class="form-group mb-2">
+                          <input type="email" class="form-control" placeholder="Email" formControlName="email">
+                      </div>
+                      <div class="form-group mb-2">
+                          <input type="password" class="form-control" placeholder="Password" formControlName="password">
+                      </div>
+                      <button type="submit" class="btn btn-secondary btn-theme" [disabled]="loginForm.invalid">Login</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<footer>
+  <div class="container">
+      <div class="row pt-2">
+          <div class="col-md-12 text-center">
+              <a routerLink="/" class="site-logo">Form App</a>
+              <div>
+                  <ul class="nav justify-content-center ">
+                      @if (!isAdminRoute) {
+                      <li class="nav-item"><a routerLink="/" class="nav-link">Form</a></li>
+                      }
+                  </ul>
+              </div>
+
+              <p class="mb-2 mt-2">Made by Chaitanya | Jayshiv</p>
+          </div>
+      </div>
+  </div>
+</footer>
