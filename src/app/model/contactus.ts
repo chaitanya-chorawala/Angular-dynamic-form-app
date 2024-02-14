@@ -7,7 +7,7 @@ export interface IContactus {
 
 export interface IContactusResult {
   id: string;
-  data: IContactus;
+  data: IMainPerson;
 }
 
 export interface IMainPerson {

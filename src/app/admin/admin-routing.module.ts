@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ContactusComponent } from './contactus/contactus.component';
+import { ContactUsComponent } from '../pages/contact-us/contact-us.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', title: 'Dashboard | Admin | Blog App', component: DashboardComponent },
       { path: 'forms', title: 'Forms | Admin | Blog App', component: ContactusComponent },
+      { path: 'forms/:id', title: 'Forms | Admin | Blog App', component: ContactUsComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

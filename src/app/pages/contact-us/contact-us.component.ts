@@ -1,13 +1,9 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  Signal,
-  signal,
-} from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ContactusService } from '../../services/contactus.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of, switchMap } from 'rxjs';
 import { IMainPerson, IPerson } from '../../model/contactus';
+import { ContactusService } from '../../services/contactus.service';
 
 @Component({
   selector: 'app-contact-us',
@@ -16,9 +12,12 @@ import { IMainPerson, IPerson } from '../../model/contactus';
 })
 export class ContactUsComponent implements OnInit, AfterViewInit {
   contactForm!: FormGroup;
+  formId?: string | null;
   constructor(
     private fb: FormBuilder,
-    private contactusService: ContactusService
+    private contactusService: ContactusService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
   personArray(): FormArray {
@@ -26,7 +25,16 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.createContactForm();
+    this.activatedRoute.paramMap
+      .pipe(
+        switchMap((param) => {
+          this.formId = param.get('id');
+          return this.formId
+            ? this.contactusService.loadById(this.formId)
+            : of(undefined);
+        })
+      )
+      .subscribe((res) => this.createContactForm(res));
   }
   ngAfterViewInit(): void {}
 
@@ -40,6 +48,12 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
       age: [res?.age || '', Validators.required],
       family: this.fb.array([]),
     });
+
+    if (res) {
+      res.family.forEach((x) => {
+        this.personArray().push(this.createPerson(x));
+      });
+    }
   }
 
   createPerson(res?: IPerson): FormGroup {
@@ -62,20 +76,20 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
   removePerson(index: number): void {
     this.personArray().removeAt(index);
     this.contactForm.updateValueAndValidity();
-    console.log(this.contactForm);
-
   }
 
   onSubmit() {
     const data = this.contactForm.getRawValue();
-    console.log(data);
-    this.contactusService.doContactUs(data);
+    this.contactusService.doContactUs(data, this.formId);
     this.doReset();
   }
 
   doReset() {
     this.contactForm.reset();
-      this.personArray().clear();
+    this.personArray().clear();
+    if (this.formId) {
+      this.router.navigateByUrl('/admin/forms');
+    }
   }
 
   resetForm() {

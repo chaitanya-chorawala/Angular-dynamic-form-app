@@ -3,8 +3,8 @@
     <div class="col-md-12">
       <div class="card shadow-effect bg-secondary-theme">
         <div class="card-body text-center">
-          <h3 class="text-primary-theme">FORM DETAIL</h3>
-          <p>You can add person detail here.</p>
+          <h3 class="text-primary-theme">{{formId ? 'EDIT' : 'ADD'}} FORM DETAIL</h3>
+          <p>You can {{formId ? 'edit' : 'add'}} person detail here.</p>
         </div>
       </div>
     </div>
@@ -87,13 +87,13 @@
                       <div class="form-group mb-2">
                         <label>Relation With Main Person</label>
                         <select class="form-select" formControlName="relationWithMainPerson">
-                          <option [selected]="true" value="">--SELECT--</option>
-                          <option value="Mother">Mother</option>
-                          <option value="Father">Father</option>
-                          <option value="Brother">Brother</option>
-                          <option value="Sister">Sister</option>
-                          <option value="Son">Son</option>
-                          <option value="Daughter">Daughter</option>
+                          <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
+                          <option ngValue="Mother">Mother</option>
+                          <option ngValue="Father">Father</option>
+                          <option ngValue="Brother">Brother</option>
+                          <option ngValue="Sister">Sister</option>
+                          <option ngValue="Son">Son</option>
+                          <option ngValue="Daughter">Daughter</option>
                         </select>
                         <!-- <input type="text" class="form-control" formControlName="relationWithMainPerson" placeholder="*Relation With Main Person" /> -->
                         <div *ngIf="person.get('relationWithMainPerson')?.hasError('required')" class="text-danger">Required field</div>
@@ -153,10 +153,13 @@
         </button>
         <button type="submit" class="btn btn-secondary bg-theme px-4 btn-theme-primary w-100" [disabled]="contactForm.invalid">
           SUBMIT FORM<br>
-          <span>Total Person: {{personArray().length}}</span>
+          <span>Total family member: {{personArray().length}}</span>
         </button>
         <button type="button" class="btn btn-warning px-4 btn-theme" (click)="resetForm()">
           CLEAR FORM
+        </button>
+        <button *ngIf="formId" type="button" class="btn btn-secondary px-4 btn-theme" routerLink="/admin/forms">
+          GO BACK
         </button>
       </div>
       </div>

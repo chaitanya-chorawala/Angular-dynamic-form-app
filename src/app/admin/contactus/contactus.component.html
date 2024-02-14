@@ -18,11 +18,13 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Mobile No</th>
-                                    <th>Email</th>
-                                    <th width="40%">Message</th>
-                                    <th>Action</th>
+                                    <th width="25%">Name</th>
+                                    <th width="10%">Occupation</th>
+                                    <th width="10%">MobileNo</th>
+                                    <th width="10%">DOB</th>
+                                    <th width="5%">Age</th>
+                                    <th width="30%">Address</th>
+                                    <th width="10%">Action</th>
                                 </tr>
                             </thead>
                             <tbody *ngIf="contacts$ | async as contacts; else loading">
@@ -31,11 +33,16 @@
                                     <tr *ngFor="let contact of contacts; index as i">
                                         <td>{{i+1}}</td>
                                         <td>{{contact.data.name}}</td>
+                                        <td>{{contact.data.occupation}}</td>
                                         <td>{{contact.data.mobileNo}}</td>
-                                        <td>{{contact.data.email}}</td>
-                                        <td>{{contact.data.message}}</td>
+                                        <td>{{contact.data.dob}}</td>
+                                        <td>{{contact.data.age}}</td>
+                                        <td>{{contact.data.address}}</td>
                                         <td>
                                             <div class="btn-group btn-group-sm">
+                                                <button type="button" class="btn btn-sm btn-outline-success"
+                                                    [routerLink]="['/admin/forms/',contact.id]"
+                                                    >Edit</button>
                                                 <button type="button" class="btn btn-sm btn-outline-danger"
                                                     (click)="onDelete(contact.id)">Delete</button>
                                             </div>
