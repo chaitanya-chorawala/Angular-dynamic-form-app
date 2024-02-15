@@ -8,6 +8,7 @@ export interface IContactus {
 export interface IContactusResult {
   id: string;
   data: IMainPerson;
+  isCollapsed?: boolean;
 }
 
 export interface IMainPerson {
@@ -25,4 +26,16 @@ export interface IPerson {
   occupation: string;
   dob: string;
   age: string;
+}
+
+export interface IExportForms {
+  rowNumber?: number,
+  id: string,
+  relationWithMainPerson: string;
+  name: string;
+  mobileNo: string;
+  occupation: string;
+  dob: string;
+  age: string;
+  address: string;
 }

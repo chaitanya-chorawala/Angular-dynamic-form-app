@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IContactus, IContactusResult, IMainPerson } from '../model/contactus';
+import {
+  IContactus,
+  IContactusResult,
+  IExportForms,
+  IMainPerson,
+} from '../model/contactus';
 import { Observable, catchError, from, map } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
@@ -10,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ContactusService {
   constructor(private afs: AngularFirestore, private toastr: ToastrService) {}
 
-  add(data: IMainPerson){
+  add(data: IMainPerson) {
     from(this.afs.collection('contactus').add(data))
       .pipe(catchError((err) => 'Something went wrong!'))
       .subscribe({
@@ -21,15 +26,15 @@ export class ContactusService {
 
   update(data: IMainPerson, id: string) {
     from(this.afs.doc(`contactus/${id}`).update(data))
-    .pipe(catchError((err) => 'Something went wrong!'))
-    .subscribe({
-      next: (val) => this.toastr.success('Form submitted!', 'Success'),
-      error: (err) => this.toastr.error(err, 'Error'),
-    });
+      .pipe(catchError((err) => 'Something went wrong!'))
+      .subscribe({
+        next: (val) => this.toastr.success('Form submitted!', 'Success'),
+        error: (err) => this.toastr.error(err, 'Error'),
+      });
   }
 
   doContactUs(data: IMainPerson, id?: string | null | undefined) {
-    if(id) {
+    if (id) {
       this.update(data, id);
     } else {
       this.add(data);
@@ -46,7 +51,50 @@ export class ContactusService {
             return {
               id: x.payload.doc.id,
               data: x.payload.doc.data(),
+              isCollapsed: false
             } as IContactusResult;
+          });
+        })
+      );
+  }
+
+  loadExportData(): Observable<IExportForms[][]> {
+    return this.afs
+      .collection('contactus')
+      .snapshotChanges()
+      .pipe(
+        map((action) => {
+          return action.map((x, index) => {
+            const res = x.payload.doc.data() as IMainPerson;
+            const formId = x.payload.doc.id as string;
+            const persons: IExportForms[] = [
+              {
+                rowNumber: (index + 1),
+                id: formId,
+                name: res.name,
+                address: res.address,
+                mobileNo: res.mobileNo,
+                occupation: res.occupation,
+                dob: res.dob,
+                age: res.age,
+                relationWithMainPerson: 'Main',
+              },
+            ];
+
+            const family = res.family.map((res) => {
+              return {
+                id: '',
+                name: res.name,
+                address: '',
+                mobileNo: '',
+                occupation: res.occupation,
+                dob: res.dob,
+                age: res.age,
+                relationWithMainPerson: res.relationWithMainPerson,
+              } as IExportForms;
+            });
+
+            return [...persons, ...family]
           });
         })
       );
