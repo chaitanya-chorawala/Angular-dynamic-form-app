@@ -75,9 +75,12 @@ export class ContactusService {
                 address: res.address,
                 mobileNo: res.mobileNo,
                 occupation: res.occupation,
+                occupationDetail: res.occupationDetail,
                 dob: res.dob,
                 age: res.age,
                 relationWithMainPerson: 'Main',
+                area: res.area,
+                isMarried: res.isMarried
               },
             ];
 

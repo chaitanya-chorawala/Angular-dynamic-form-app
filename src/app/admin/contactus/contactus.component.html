@@ -18,12 +18,14 @@
               <thead>
                 <tr>
                   <th width="5%">#</th>
-                  <th width="20%">Name</th>
-                  <th width="10%">Occupation</th>
+                  <th width="15%">Name</th>
+                  <th width="5%">Is Married?</th>
+                  <th width="10%">Occupation/Detail</th>
                   <th width="10%">MobileNo</th>
                   <th width="10%">DOB</th>
                   <th width="5%">Age</th>
-                  <th width="25%">Address</th>
+                  <th width="5%">Area</th>
+                  <th width="20%">Address</th>
                   <th width="5%">Members</th>
                   <th width="10%">Action</th>
                 </tr>
@@ -34,10 +36,12 @@
                     <tr>
                       <td>{{ i + 1 }}</td>
                       <td>{{ contact.data.name }}</td>
-                      <td>{{ contact.data.occupation }}</td>
+                      <td>{{ contact.data.isMarried }}</td>
+                      <td>{{ contact.data.occupation }} {{ contact.data.occupationDetail ? ' - '+ contact.data.occupationDetail : '' }}</td>
                       <td>{{ contact.data.mobileNo }}</td>
                       <td>{{ contact.data.dob }}</td>
                       <td>{{ contact.data.age }}</td>
+                      <td>{{ contact.data.area }}</td>
                       <td>{{ contact.data.address }}</td>
                       <td>
                         <div class="btn-group btn-group-sm">
@@ -63,15 +67,16 @@
                       </td>
                     </tr>
                     <tr *ngIf="contact.isCollapsed">
-                      <td colspan="9">
+                      <td colspan="11">
                         <div class="table-responsive">
                           <table class="table table-bordered">
                             <thead>
                               <tr>
                               <th>#</th>
                               <th>Name</th>
+                              <th>IsMarried?</th>
                               <th>Relation</th>
-                              <th>Occupation</th>
+                              <th>Occupation/Detail</th>
                               <th>DOB</th>
                               <th>Age</th>
                             </tr>
@@ -80,8 +85,9 @@
                               <tr *ngFor="let person of contact.data.family;index as i">
                                 <td>{{ i + 1 }}</td>
                                 <td>{{ person.name }}</td>
+                                <td>{{ person.isMarried }}</td>
                                 <td>{{ person.relationWithMainPerson }}</td>
-                                <td>{{ person.occupation }}</td>
+                                <td>{{ person.occupation }} {{ person.occupationDetail ? ' - '+ person.occupationDetail : '' }}</td>
                                 <td>{{ person.dob }}</td>
                                 <td>{{ person.age }}</td>
                               </tr>

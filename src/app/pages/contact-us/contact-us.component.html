@@ -27,11 +27,31 @@
                   <div *ngIf="contactForm.get('name')?.hasError('required')" class="text-danger">Required field</div>
                 </div>
               </div>
-              <div class="col-sm-12 col-md-6">
+              <div class="col-sm-12 col-md-2">
                 <div class="form-group mb-2">
                   <label>Occupation</label>
-                  <input type="text" class="form-control" formControlName="occupation" placeholder="*Occupation" />
+                  <select class="form-select" formControlName="occupation" (change)="MainPersonOccupationChange($event)">
+                    <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
+                    <option *ngFor="let res of occupationValues" [ngValue]="res.key">{{res.val}}</option>
+                  </select>
                   <div *ngIf="contactForm.get('occupation')?.hasError('required')" class="text-danger">Required field</div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-2" *ngIf="getMainPersonControl('occupation').value === 'STUDENT' || getMainPersonControl('occupation').value === 'OTHER'">
+                <div class="form-group mb-2">
+                  <label>Occupation Detail</label>
+                  <input type="text" class="form-control" formControlName="occupationDetail" placeholder="Occupation detail" />
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-2">
+                <div class="form-group mb-2">
+                  <label>Is Married?</label>
+                  <select class="form-select" formControlName="isMarried">
+                    <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
+                    <option ngValue="No">No</option>
+                    <option ngValue="Yes">Yes</option>
+                  </select>
+                  <div *ngIf="contactForm.get('isMarried')?.hasError('required')" class="text-danger">Required field</div>
                 </div>
               </div>
             </div>
@@ -39,24 +59,31 @@
               <div class="col-sm-12 col-md-6">
                 <div class="form-group mb-2">
                   <label>DOB</label>
-                  <input type="date" class="form-control" formControlName="dob" placeholder="*DOB" />
+                  <input type="date" class="form-control" formControlName="dob" placeholder="*DOB" (change)="SetMainPersonDOB($event)" />
                   <div *ngIf="contactForm.get('dob')?.hasError('required')" class="text-danger">Required field</div>
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
                 <div class="form-group mb-2">
                   <label>Age</label>
-                  <input type="text" class="form-control" formControlName="age" placeholder="*Age" />
+                  <input type="text" class="form-control" formControlName="age" placeholder="*Age"/>
                   <div *ngIf="contactForm.get('age')?.hasError('required')" class="text-danger">Required field</div>
                 </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-sm-12 col-md-6">
                 <div class="form-group mb-2">
                   <label>Mobile No</label>
                   <input type="text" class="form-control" formControlName="mobileNo" placeholder="*Mobile No" />
                   <div *ngIf="contactForm.get('mobileNo')?.hasError('required')" class="text-danger">Required field</div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label>Area</label>
+                  <input type="text" class="form-control" formControlName="area" placeholder="*Area" />
+                  <div *ngIf="contactForm.get('area')?.hasError('required')" class="text-danger">Required field</div>
                 </div>
               </div>
               <div class="col-md-12">
@@ -88,14 +115,8 @@
                         <label>Relation With Main Person</label>
                         <select class="form-select" formControlName="relationWithMainPerson">
                           <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
-                          <option ngValue="Mother">Mother</option>
-                          <option ngValue="Father">Father</option>
-                          <option ngValue="Brother">Brother</option>
-                          <option ngValue="Sister">Sister</option>
-                          <option ngValue="Son">Son</option>
-                          <option ngValue="Daughter">Daughter</option>
+                          <option *ngFor="let res of relationValues" [ngValue]="res.key">{{res.val}}</option>
                         </select>
-                        <!-- <input type="text" class="form-control" formControlName="relationWithMainPerson" placeholder="*Relation With Main Person" /> -->
                         <div *ngIf="person.get('relationWithMainPerson')?.hasError('required')" class="text-danger">Required field</div>
                       </div>
                     </div>
@@ -108,11 +129,32 @@
                         <div *ngIf="person.get('name')?.hasError('required')" class="text-danger">Required field</div>
                       </div>
                     </div>
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-sm-12 col-md-2">
                       <div class="form-group mb-2">
                         <label>Occupation</label>
-                        <input type="text" class="form-control" formControlName="occupation" placeholder="*Occupation" />
+                        <select class="form-select" formControlName="occupation" (change)="MemberPersonOccupationChange($event, personIndex)">
+                          <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
+                          <option *ngFor="let res of occupationValues" [ngValue]="res.key">{{res.val}}</option>
+                        </select>
                         <div *ngIf="person.get('occupation')?.hasError('required')" class="text-danger">Required field</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-2" *ngIf="getMemberPersonControl('occupation',personIndex).value === 'STUDENT' || getMemberPersonControl('occupation',personIndex).value === 'OTHER'">
+                      <div class="form-group mb-2">
+                        <label>Occupation Detail</label>
+                        <input type="text" class="form-control" formControlName="occupationDetail"
+                        placeholder="Occupation detail" />
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-2" *ngIf="unMarriedRelationValues.includes(getMemberPersonControl('relationWithMainPerson',personIndex).value)">
+                      <div class="form-group mb-2">
+                        <label>Is Married?</label>
+                        <select class="form-select" formControlName="isMarried">
+                          <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
+                          <option ngValue="No">No</option>
+                          <option ngValue="Yes">Yes</option>
+                        </select>
+                        <div *ngIf="person.get('isMarried')?.hasError('required')" class="text-danger">Required field</div>
                       </div>
                     </div>
                   </div>
@@ -120,14 +162,14 @@
                     <div class="col-sm-12 col-md-6">
                       <div class="form-group mb-2">
                         <label>DOB</label>
-                        <input type="date" class="form-control" formControlName="dob" placeholder="*DOB" />
+                        <input type="date" class="form-control" formControlName="dob" placeholder="*DOB" (change)="SetMemberPersonDOB($event, personIndex)" />
                         <div *ngIf="person.get('dob')?.hasError('required')" class="text-danger">Required field</div>
                       </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
                       <div class="form-group mb-2">
                         <label>Age</label>
-                        <input type="text" class="form-control" formControlName="age" placeholder="*Age" />
+                        <input type="text" class="form-control" formControlName="age" placeholder="*Age"/>
                         <div *ngIf="person.get('age')?.hasError('required')" class="text-danger">Required field</div>
                       </div>
                     </div>
