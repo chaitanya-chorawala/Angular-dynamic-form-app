@@ -11,31 +11,39 @@ export interface IContactusResult {
   isCollapsed?: boolean;
 }
 
-export interface IMainPerson {
-  name: string;
-  address: string;
-  mobileNo: string;
-  occupation: string;
-  dob: string;
-  age: string;
-  family: IPerson[]
-}
 export interface IPerson {
   name: string;
-  relationWithMainPerson: string;
   occupation: string;
+  occupationDetail: string;
   dob: string;
   age: string;
+  isMarried: string;
 }
 
-export interface IExportForms {
+export interface IMainPerson extends IPerson {
+  area: string;
+  address: string;
+  mobileNo: string;
+  family: IMember[]
+}
+export interface IMember extends IPerson {
+  relationWithMainPerson: string;
+}
+
+export interface IExportForms extends IPerson {
   rowNumber?: number,
   id: string,
   relationWithMainPerson: string;
-  name: string;
-  mobileNo: string;
-  occupation: string;
-  dob: string;
-  age: string;
+  area: string;
   address: string;
+  mobileNo: string;
+}
+
+export interface IDropdown {
+  key: string,
+  val: string
+}
+
+export interface IRelation extends IDropdown {
+  isMarried?: boolean
 }
