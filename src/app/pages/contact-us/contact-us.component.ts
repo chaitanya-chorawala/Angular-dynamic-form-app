@@ -14,6 +14,7 @@ import { getAge, occupationValues, relationValues } from '../../shared/utilities
 export class ContactUsComponent implements OnInit, AfterViewInit {
   contactForm!: FormGroup;
   formId?: string | null;
+  formStatus: string = 'ADD';
 
   relationValues = relationValues;
   unMarriedRelationValues = relationValues.filter(x => !x.isMarried).map(x => x.key);
@@ -24,7 +25,10 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
     private contactusService: ContactusService,
     private activatedRoute: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+    console.log(this.formId);
+    
+  }
 
   personArray(): FormArray {
     return this.contactForm.get('family') as FormArray;
@@ -73,18 +77,19 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
   createContactForm(res?: IMainPerson): void {
     this.contactForm = this.fb.group({
       name: [res?.name || '', Validators.required],
-      isMarried: [res?.isMarried || '', Validators.required],
-      occupation: [res?.occupation || '', Validators.required],
+      isMarried: [res?.isMarried || null, Validators.required],
+      occupation: [res?.occupation || null, Validators.required],
       occupationDetail: [res?.occupationDetail || ''],
       dob: [res?.dob || '', Validators.required],
       age: [res?.age || '', Validators.required],
       mobileNo: [res?.mobileNo || '', Validators.required],
-      area: [res?.area || '', [Validators.required]],
+      area: [res?.area || null, [Validators.required]],
       address: [res?.address || '', [Validators.required]],
       family: this.fb.array([]),
     });
 
     if (res) {
+      this.formStatus = 'EDIT';
       res.family.forEach((x) => {
         this.personArray().push(this.createPerson(x));
       });
@@ -95,11 +100,11 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
     return this.fb.group({
       name: [res?.name || '', Validators.required],
       relationWithMainPerson: [
-        res?.relationWithMainPerson || '',
+        res?.relationWithMainPerson || null,
         Validators.required,
       ],
-      isMarried: [res?.isMarried || ''],
-      occupation: [res?.occupation || '', Validators.required],
+      isMarried: [res?.isMarried || null],
+      occupation: [res?.occupation || null, Validators.required],
       occupationDetail: [res?.occupationDetail || ''],
       dob: [res?.dob || ''],
       age: [res?.age || ''],
@@ -122,9 +127,11 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
   }
 
   doReset() {
+    this.formId = undefined;
     this.contactForm.reset();
     this.personArray().clear();
-    if (this.formId) {
+    
+    if (this.formStatus === 'EDIT') {
       this.router.navigateByUrl('/admin/forms');
     }
   }

@@ -3,8 +3,8 @@
     <div class="col-md-12">
       <div class="card shadow-effect bg-secondary-theme">
         <div class="card-body text-center">
-          <h3 class="text-primary-theme">{{formId ? 'EDIT' : 'ADD'}} FORM DETAIL</h3>
-          <p>You can {{formId ? 'edit' : 'add'}} person detail here.</p>
+          <h3 class="text-primary-theme">{{formStatus}} FORM DETAIL</h3>
+          <p>You can {{formStatus | lowercase}} person detail here.</p>
         </div>
       </div>
     </div>
@@ -31,7 +31,7 @@
                 <div class="form-group mb-2">
                   <label>Occupation</label>
                   <select class="form-select" formControlName="occupation" (change)="MainPersonOccupationChange($event)">
-                    <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
+                    <option value="null">--SELECT--</option>
                     <option *ngFor="let res of occupationValues" [ngValue]="res.key">{{res.val}}</option>
                   </select>
                   <div *ngIf="contactForm.get('occupation')?.hasError('required')" class="text-danger">Required field</div>
@@ -47,7 +47,7 @@
                 <div class="form-group mb-2">
                   <label>Is Married?</label>
                   <select class="form-select" formControlName="isMarried">
-                    <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
+                    <option value="null">--SELECT--</option>
                     <option ngValue="No">No</option>
                     <option ngValue="Yes">Yes</option>
                   </select>
@@ -81,8 +81,23 @@
               </div>
               <div class="col-sm-12 col-md-6">
                 <div class="form-group mb-2">
-                  <label>Area</label>
-                  <input type="text" class="form-control" formControlName="area" placeholder="*Area" />
+                  <label>Area</label>                  
+                  <select class="form-select" formControlName="area">
+                    <option value="null">--SELECT--</option>
+                    <option ngValue="SAYEDPURA">SAYEDPURA</option>
+                    <option ngValue="NANPURA">NANPURA</option>
+                    <option ngValue="UDHNA/PANDESARA">UDHNA/PANDESARA</option>
+                    <option ngValue="KATARGAM">KATARGAM</option>
+                    <option ngValue="VED ROAD">VED ROAD</option>
+                    <option ngValue="VARACHHA">VARACHHA</option>
+                    <option ngValue="MOTA VARACHHA">MOTA VARACHHA</option>
+                    <option ngValue="SUMUL DAIRY">SUMUL DAIRY</option>
+                    <option ngValue="ADAJAN / PAL">ADAJAN / PAL</option>
+                    <option ngValue="RANDER / PALANPUR JAHANGIRPURA">RANDER / PALANPUR JAHANGIRPURA</option>
+                    <option ngValue="AMROLI / CHHAPRABATHA">AMROLI / CHHAPRABATHA</option>
+                    <option ngValue="OLPAD">OLPAD</option>
+                    <option ngValue="OTHER">OTHER</option>
+                  </select>
                   <div *ngIf="contactForm.get('area')?.hasError('required')" class="text-danger">Required field</div>
                 </div>
               </div>
@@ -114,7 +129,7 @@
                       <div class="form-group mb-2">
                         <label>Relation With Main Person</label>
                         <select class="form-select" formControlName="relationWithMainPerson">
-                          <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
+                          <option value="null">--SELECT--</option>
                           <option *ngFor="let res of relationValues" [ngValue]="res.key">{{res.val}}</option>
                         </select>
                         <div *ngIf="person.get('relationWithMainPerson')?.hasError('required')" class="text-danger">Required field</div>
@@ -133,7 +148,7 @@
                       <div class="form-group mb-2">
                         <label>Occupation</label>
                         <select class="form-select" formControlName="occupation" (change)="MemberPersonOccupationChange($event, personIndex)">
-                          <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
+                          <option value="null">--SELECT--</option>
                           <option *ngFor="let res of occupationValues" [ngValue]="res.key">{{res.val}}</option>
                         </select>
                         <div *ngIf="person.get('occupation')?.hasError('required')" class="text-danger">Required field</div>
@@ -150,7 +165,7 @@
                       <div class="form-group mb-2">
                         <label>Is Married?</label>
                         <select class="form-select" formControlName="isMarried">
-                          <option [selected]="!this.formId ? true : false" value="">--SELECT--</option>
+                          <option value="null">--SELECT--</option>
                           <option ngValue="No">No</option>
                           <option ngValue="Yes">Yes</option>
                         </select>
