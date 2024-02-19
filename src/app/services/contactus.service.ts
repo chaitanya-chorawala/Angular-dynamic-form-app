@@ -71,29 +71,32 @@ export class ContactusService {
               {
                 rowNumber: (index + 1),
                 id: formId,
+                relationWithMainPerson: 'Main',
                 name: res.name,
-                address: res.address,
+                isMarried: res.isMarried,
                 mobileNo: res.mobileNo,
                 occupation: res.occupation,
                 occupationDetail: res.occupationDetail,
+                address: res.address,
+                area: res.area,
                 dob: res.dob,
                 age: res.age,
-                relationWithMainPerson: 'Main',
-                area: res.area,
-                isMarried: res.isMarried
               },
             ];
 
             const family = res.family.map((res) => {
               return {
                 id: '',
+                relationWithMainPerson: res.relationWithMainPerson,
                 name: res.name,
-                address: '',
+                isMarried: res.isMarried,
                 mobileNo: '',
                 occupation: res.occupation,
+                occupationDetail: res.occupationDetail,
+                address: '',
+                area: '',
                 dob: res.dob,
                 age: res.age,
-                relationWithMainPerson: res.relationWithMainPerson,
               } as IExportForms;
             });
 
