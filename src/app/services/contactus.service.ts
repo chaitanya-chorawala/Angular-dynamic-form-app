@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, catchError, from, map } from 'rxjs';
 import {
-  IContactus,
   IContactusResult,
   IExportForms,
-  IMainPerson,
+  IMainPerson
 } from '../model/contactus';
-import { Observable, catchError, from, map } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +42,7 @@ export class ContactusService {
 
   loadData(): Observable<IContactusResult[]> {
     return this.afs
-      .collection('contactus')
+      .collection('contactus', ref => ref.orderBy('createdAt', 'desc'))
       .snapshotChanges()
       .pipe(
         map((action) => {
@@ -60,7 +59,7 @@ export class ContactusService {
 
   loadExportData(): Observable<IExportForms[][]> {
     return this.afs
-      .collection('contactus')
+      .collection('contactus', ref => ref.orderBy('name'))
       .snapshotChanges()
       .pipe(
         map((action) => {
@@ -81,6 +80,7 @@ export class ContactusService {
                 area: res.area,
                 dob: res.dob,
                 age: res.age,
+                lastModifiedAt: res.createdAtDateTime
               },
             ];
 
@@ -97,6 +97,7 @@ export class ContactusService {
                 area: '',
                 dob: res.dob,
                 age: res.age,
+                lastModifiedAt: ''
               } as IExportForms;
             });
 

@@ -26,3 +26,30 @@ export const getAge = (d1: string) => {
   const diff = d2.getTime() - d1Date.getTime();
   return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
 }
+
+export const formatDateToDDMMYYYYHHMMSSFFF = () => {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const year = String(now.getFullYear());
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+
+  return `${day}${month}${year}${hours}${minutes}${seconds}${milliseconds}`;
+}
+
+
+export const formatDateToLocale = () => {
+  const now = new Date();  
+  return now.toLocaleString('en-US', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true
+  });  
+}
