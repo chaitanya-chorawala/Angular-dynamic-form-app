@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, switchMap } from 'rxjs';
 import { IMainPerson, IMember } from '../../model/contactus';
 import { ContactusService } from '../../services/contactus.service';
-import { getAge, occupationValues, relationValues } from '../../shared/utilities';
+import { formatDateToDDMMYYYYHHMMSSFFF, formatDateToLocale, getAge, occupationValues, relationValues } from '../../shared/utilities';
 
 @Component({
   selector: 'app-contact-us',
@@ -25,10 +25,7 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
     private contactusService: ContactusService,
     private activatedRoute: ActivatedRoute,
     private router: Router
-  ) {
-    console.log(this.formId);
-    
-  }
+  ) {}
 
   personArray(): FormArray {
     return this.contactForm.get('family') as FormArray;
@@ -86,6 +83,8 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
       area: [res?.area || null, [Validators.required]],
       address: [res?.address || '', [Validators.required]],
       family: this.fb.array([]),
+      createdAt: '',
+      createdAtDateTime: ''
     });
 
     if (res) {
@@ -121,7 +120,9 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    const data = this.contactForm.getRawValue();
+    const data = this.contactForm.getRawValue() as IMainPerson;
+    data.createdAt = formatDateToDDMMYYYYHHMMSSFFF();
+    data.createdAtDateTime = formatDateToLocale();
     this.contactusService.doContactUs(data, this.formId);
     this.doReset();
   }
