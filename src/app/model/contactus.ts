@@ -24,7 +24,9 @@ export interface IMainPerson extends IPerson {
   area: string;
   address: string;
   mobileNo: string;
-  family: IMember[]
+  family: IMember[];
+  createdAtDateTime: string;
+  createdAt: string;
 }
 export interface IMember extends IPerson {
   relationWithMainPerson: string;
@@ -37,6 +39,7 @@ export interface IExportForms extends IPerson {
   area: string;
   address: string;
   mobileNo: string;
+  lastModifiedAt: string;
 }
 
 export interface IDropdown {
