@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, switchMap } from 'rxjs';
 import { IMainPerson, IMember } from '../../model/contactus';
 import { ContactusService } from '../../services/contactus.service';
-import { formatDateToDDMMYYYYHHMMSSFFF, formatDateToLocale, getAge, occupationValues, relationValues } from '../../shared/utilities';
+import { areaValues, formatDateToDDMMYYYYHHMMSSFFF, formatDateToLocale, getAge, occupationValues, relationValues } from '../../shared/utilities';
 
 @Component({
   selector: 'app-contact-us',
@@ -19,6 +19,7 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
   relationValues = relationValues;
   unMarriedRelationValues = relationValues.filter(x => !x.isMarried).map(x => x.key);
   occupationValues = occupationValues;
+  areaValues = areaValues;
 
   constructor(
     private fb: FormBuilder,
@@ -74,13 +75,14 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
   createContactForm(res?: IMainPerson): void {
     this.contactForm = this.fb.group({
       name: [res?.name || '', Validators.required],
-      isMarried: [res?.isMarried || null, Validators.required],
-      occupation: [res?.occupation || null, Validators.required],
+      gender: [res?.gender || '', Validators.required],
+      isMarried: [res?.isMarried || '', Validators.required],
+      occupation: [res?.occupation || '', Validators.required],
       occupationDetail: [res?.occupationDetail || ''],
       dob: [res?.dob || '', Validators.required],
       age: [res?.age || '', Validators.required],
       mobileNo: [res?.mobileNo || '', Validators.required],
-      area: [res?.area || null, [Validators.required]],
+      area: [res?.area || '', [Validators.required]],
       address: [res?.address || '', [Validators.required]],
       family: this.fb.array([]),
       createdAt: '',
@@ -93,17 +95,21 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
         this.personArray().push(this.createPerson(x));
       });
     }
+
+    console.log(this.contactForm.getRawValue() as IMainPerson);
+
   }
 
   createPerson(res?: IMember): FormGroup {
     return this.fb.group({
       name: [res?.name || '', Validators.required],
       relationWithMainPerson: [
-        res?.relationWithMainPerson || null,
+        res?.relationWithMainPerson || '',
         Validators.required,
       ],
-      isMarried: [res?.isMarried || null],
-      occupation: [res?.occupation || null, Validators.required],
+      gender: [res?.gender || '', Validators.required],
+      isMarried: [res?.isMarried || '', Validators.required],
+      occupation: [res?.occupation || '', Validators.required],
       occupationDetail: [res?.occupationDetail || ''],
       dob: [res?.dob || ''],
       age: [res?.age || ''],
@@ -131,10 +137,13 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
     this.formId = undefined;
     this.contactForm.reset();
     this.personArray().clear();
-    
+
     if (this.formStatus === 'EDIT') {
       this.router.navigateByUrl('/admin/forms');
     }
+
+    console.log(this.contactForm.getRawValue() as IMainPerson);
+
   }
 
   resetForm() {

@@ -18,6 +18,7 @@ export interface IPerson {
   dob: string;
   age: string;
   isMarried: string;
+  gender: string;
 }
 
 export interface IMainPerson extends IPerson {

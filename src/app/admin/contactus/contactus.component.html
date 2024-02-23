@@ -19,7 +19,8 @@
                 <tr>
                   <th width="5%">#</th>
                   <th width="15%">Name</th>
-                  <th width="5%">Is Married?</th>
+                  <th width="2%">Gender</th>
+                  <th width="2%">Is Married?</th>
                   <th width="5%">Occupation / Detail</th>
                   <th width="10%">MobileNo</th>
                   <th width="10%">DOB</th>
@@ -37,6 +38,7 @@
                     <tr>
                       <td>{{ i + 1 }}</td>
                       <td>{{ contact.data.name }}</td>
+                      <td>{{ contact.data.gender }}</td>
                       <td>{{ contact.data.isMarried }}</td>
                       <td>{{ contact.data.occupation }} {{ contact.data.occupationDetail ? ' - '+ contact.data.occupationDetail : '' }}</td>
                       <td>{{ contact.data.mobileNo }}</td>
@@ -76,8 +78,9 @@
                               <tr>
                               <th>#</th>
                               <th>Name</th>
-                              <th>IsMarried?</th>
                               <th>Relation</th>
+                              <th>Gender</th>
+                              <th>IsMarried?</th>
                               <th>Occupation/Detail</th>
                               <th>DOB</th>
                               <th>Age</th>
@@ -87,8 +90,9 @@
                               <tr *ngFor="let person of contact.data.family;index as i">
                                 <td>{{ i + 1 }}</td>
                                 <td>{{ person.name }}</td>
-                                <td>{{ person.isMarried }}</td>
                                 <td>{{ person.relationWithMainPerson }}</td>
+                                <td>{{ person.gender }}</td>
+                                <td>{{ person.isMarried }}</td>
                                 <td>{{ person.occupation }} {{ person.occupationDetail ? ' - '+ person.occupationDetail : '' }}</td>
                                 <td>{{ person.dob }}</td>
                                 <td>{{ person.age }}</td>

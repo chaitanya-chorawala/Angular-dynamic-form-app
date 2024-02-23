@@ -27,27 +27,40 @@
                   <div *ngIf="contactForm.get('name')?.hasError('required')" class="text-danger">Required field</div>
                 </div>
               </div>
-              <div class="col-sm-12 col-md-2">
+              <div class="col-sm-12 col-md-3">
                 <div class="form-group mb-2">
                   <label>Occupation</label>
                   <select class="form-select" formControlName="occupation" (change)="MainPersonOccupationChange($event)">
-                    <option value="null">--SELECT--</option>
+                    <option value="">--SELECT--</option>
                     <option *ngFor="let res of occupationValues" [ngValue]="res.key">{{res.val}}</option>
                   </select>
                   <div *ngIf="contactForm.get('occupation')?.hasError('required')" class="text-danger">Required field</div>
                 </div>
               </div>
-              <div class="col-sm-12 col-md-2" *ngIf="getMainPersonControl('occupation').value === 'STUDENT' || getMainPersonControl('occupation').value === 'OTHER'">
+              <div class="col-sm-12 col-md-3" *ngIf="getMainPersonControl('occupation').value === 'STUDENT' || getMainPersonControl('occupation').value === 'OTHER'">
                 <div class="form-group mb-2">
                   <label>Occupation Detail</label>
-                  <input type="text" class="form-control" formControlName="occupationDetail" placeholder="Occupation detail" />
+                  <input type="text" class="form-control" formControlName="occupationDetail" placeholder="(Student stream/standard/other)" />
                 </div>
               </div>
-              <div class="col-sm-12 col-md-2">
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label>Gender</label>
+                  <select class="form-select" formControlName="gender">
+                    <option value="">--SELECT--</option>
+                    <option ngValue="Male">Male</option>
+                    <option ngValue="Female">Female</option>
+                  </select>
+                  <div *ngIf="contactForm.get('gender')?.hasError('required')" class="text-danger">Required field</div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-6">
                 <div class="form-group mb-2">
                   <label>Is Married?</label>
                   <select class="form-select" formControlName="isMarried">
-                    <option value="null">--SELECT--</option>
+                    <option value="">--SELECT--</option>
                     <option ngValue="No">No</option>
                     <option ngValue="Yes">Yes</option>
                   </select>
@@ -81,22 +94,10 @@
               </div>
               <div class="col-sm-12 col-md-6">
                 <div class="form-group mb-2">
-                  <label>Area</label>                  
+                  <label>Area</label>
                   <select class="form-select" formControlName="area">
-                    <option value="null">--SELECT--</option>
-                    <option ngValue="SAYEDPURA">SAYEDPURA</option>
-                    <option ngValue="NANPURA">NANPURA</option>
-                    <option ngValue="UDHNA/PANDESARA">UDHNA/PANDESARA</option>
-                    <option ngValue="KATARGAM">KATARGAM</option>
-                    <option ngValue="VED ROAD">VED ROAD</option>
-                    <option ngValue="VARACHHA">VARACHHA</option>
-                    <option ngValue="MOTA VARACHHA">MOTA VARACHHA</option>
-                    <option ngValue="SUMUL DAIRY">SUMUL DAIRY</option>
-                    <option ngValue="ADAJAN / PAL">ADAJAN / PAL</option>
-                    <option ngValue="RANDER / PALANPUR JAHANGIRPURA">RANDER / PALANPUR JAHANGIRPURA</option>
-                    <option ngValue="AMROLI / CHHAPRABATHA">AMROLI / CHHAPRABATHA</option>
-                    <option ngValue="OLPAD">OLPAD</option>
-                    <option ngValue="OTHER">OTHER</option>
+                    <option value="">--SELECT--</option>
+                    <option *ngFor="let res of areaValues" [ngValue]="res.key">{{res.val}}</option>
                   </select>
                   <div *ngIf="contactForm.get('area')?.hasError('required')" class="text-danger">Required field</div>
                 </div>
@@ -129,7 +130,7 @@
                       <div class="form-group mb-2">
                         <label>Relation With Main Person</label>
                         <select class="form-select" formControlName="relationWithMainPerson">
-                          <option value="null">--SELECT--</option>
+                          <option value="">--SELECT--</option>
                           <option *ngFor="let res of relationValues" [ngValue]="res.key">{{res.val}}</option>
                         </select>
                         <div *ngIf="person.get('relationWithMainPerson')?.hasError('required')" class="text-danger">Required field</div>
@@ -144,28 +145,41 @@
                         <div *ngIf="person.get('name')?.hasError('required')" class="text-danger">Required field</div>
                       </div>
                     </div>
-                    <div class="col-sm-12 col-md-2">
+                    <div class="col-sm-12 col-md-3">
                       <div class="form-group mb-2">
                         <label>Occupation</label>
                         <select class="form-select" formControlName="occupation" (change)="MemberPersonOccupationChange($event, personIndex)">
-                          <option value="null">--SELECT--</option>
+                          <option value="">--SELECT--</option>
                           <option *ngFor="let res of occupationValues" [ngValue]="res.key">{{res.val}}</option>
                         </select>
                         <div *ngIf="person.get('occupation')?.hasError('required')" class="text-danger">Required field</div>
                       </div>
                     </div>
-                    <div class="col-sm-12 col-md-2" *ngIf="getMemberPersonControl('occupation',personIndex).value === 'STUDENT' || getMemberPersonControl('occupation',personIndex).value === 'OTHER'">
+                    <div class="col-sm-12 col-md-3" *ngIf="getMemberPersonControl('occupation',personIndex).value === 'STUDENT' || getMemberPersonControl('occupation',personIndex).value === 'OTHER'">
                       <div class="form-group mb-2">
                         <label>Occupation Detail</label>
                         <input type="text" class="form-control" formControlName="occupationDetail"
-                        placeholder="Occupation detail" />
+                        placeholder="(Student stream/standard/other)" />
                       </div>
                     </div>
-                    <div class="col-sm-12 col-md-2" *ngIf="unMarriedRelationValues.includes(getMemberPersonControl('relationWithMainPerson',personIndex).value)">
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group mb-2">
+                        <label>Gender</label>
+                        <select class="form-select" formControlName="gender">
+                          <option value="">--SELECT--</option>
+                          <option ngValue="Male">Male</option>
+                          <option ngValue="Female">Female</option>
+                        </select>
+                        <div *ngIf="person.get('gender')?.hasError('required')" class="text-danger">Required field</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6" *ngIf="unMarriedRelationValues.includes(getMemberPersonControl('relationWithMainPerson',personIndex).value)">
                       <div class="form-group mb-2">
                         <label>Is Married?</label>
                         <select class="form-select" formControlName="isMarried">
-                          <option value="null">--SELECT--</option>
+                          <option value="">--SELECT--</option>
                           <option ngValue="No">No</option>
                           <option ngValue="Yes">Yes</option>
                         </select>

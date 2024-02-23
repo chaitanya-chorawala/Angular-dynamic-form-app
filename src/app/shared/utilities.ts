@@ -20,6 +20,22 @@ export const occupationValues: IDropdown[] = [
   {key: 'OTHER', val: 'OTHER'},
 ];
 
+export const areaValues: IDropdown[] = [
+  {key:'SAYEDPURA', val: 'SAYEDPURA'},
+  {key:'NANPURA', val: 'NANPURA'},
+  {key:'UDHNA/PANDESARA', val: 'UDHNA/PANDESARA'},
+  {key:'KATARGAM', val: 'KATARGAM'},
+  {key:'VED ROAD', val: 'VED ROAD'},
+  {key:'VARACHHA', val: 'VARACHHA'},
+  {key:'MOTA VARACHHA', val: 'MOTA VARACHHA'},
+  {key:'SUMUL DAIRY', val: 'SUMUL DAIRY'},
+  {key:'ADAJAN / PAL', val: 'ADAJAN / PAL'},
+  {key:'RANDER / PALANPUR JAHANGIRPURA', val: 'RANDER / PALANPUR JAHANGIRPURA'},
+  {key:'AMROLI / CHHAPRABATHA', val: 'AMROLI / CHHAPRABATHA'},
+  {key:'OLPAD', val: 'OLPAD'},
+  {key:'OTHER', val: 'OTHER'}
+]
+
 export const getAge = (d1: string) => {
   const d1Date: Date = new Date(d1);
   const d2 = new Date();
@@ -42,7 +58,7 @@ export const formatDateToDDMMYYYYHHMMSSFFF = () => {
 
 
 export const formatDateToLocale = () => {
-  const now = new Date();  
+  const now = new Date();
   return now.toLocaleString('en-US', {
     day: 'numeric',
     month: 'short',
@@ -51,5 +67,5 @@ export const formatDateToLocale = () => {
     minute: 'numeric',
     second: 'numeric',
     hour12: true
-  });  
+  });
 }
