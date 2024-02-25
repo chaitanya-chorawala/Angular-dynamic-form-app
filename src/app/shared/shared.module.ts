@@ -16,9 +16,10 @@ import { errorInterceptor } from './error.interceptor';
 import { HtmlRenderPipe } from './html-render.pipe';
 import { TruncatePipe } from './truncate.pipe';
 import { HeaderComponent } from '../layouts/header/header.component';
+import { NumberOnlyDirective } from './number-only.directive';
 
 @NgModule({
-  declarations: [HeaderComponent,NavbarComponent, TruncatePipe, HtmlRenderPipe],
+  declarations: [HeaderComponent,NavbarComponent, TruncatePipe, HtmlRenderPipe, NumberOnlyDirective],
   imports: [
     CommonModule,
     RouterModule,
@@ -32,7 +33,7 @@ import { HeaderComponent } from '../layouts/header/header.component';
     FontAwesomeModule,
     HttpClientModule
   ],
-  exports: [HeaderComponent,NavbarComponent, TruncatePipe, ReactiveFormsModule, FontAwesomeModule, HtmlRenderPipe],
+  exports: [HeaderComponent,NavbarComponent, TruncatePipe, ReactiveFormsModule, FontAwesomeModule, HtmlRenderPipe, NumberOnlyDirective],
   providers: [ToastrService, ScreenTrackingService, UserTrackingService,
     provideHttpClient(withInterceptors([errorInterceptor]))
   ],

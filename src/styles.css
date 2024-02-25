@@ -64,6 +64,7 @@ input[type=text],
 input[type=email],
 input[type=date],
 input[type=password],
+input[type=number],
 select {
     height: 60px;
     padding-left: 20px;
@@ -76,6 +77,18 @@ textarea,select,option {
 
 input[type=checkbox] {
     font-size: 1.5rem;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .form-check-input:checked {
