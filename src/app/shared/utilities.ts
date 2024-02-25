@@ -37,10 +37,14 @@ export const areaValues: IDropdown[] = [
 ]
 
 export const getAge = (d1: string) => {
-  const d1Date: Date = new Date(d1);
-  const d2 = new Date();
-  const diff = d2.getTime() - d1Date.getTime();
-  return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+  try {
+    const d1Date: Date = new Date(d1);
+    const d2 = new Date();
+    const diff = d2.getTime() - d1Date.getTime();
+    return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+  } catch (error) {
+    return 0;
+  }
 }
 
 export const formatDateToDDMMYYYYHHMMSSFFF = () => {
@@ -60,7 +64,7 @@ export const formatDateToDDMMYYYYHHMMSSFFF = () => {
 export const formatDateToLocale = () => {
   const now = new Date();
   return now.toLocaleString('en-US', {
-    day: 'numeric',
+    day: '2-digit',
     month: 'short',
     year: 'numeric',
     hour: 'numeric',
@@ -68,4 +72,16 @@ export const formatDateToLocale = () => {
     second: 'numeric',
     hour12: true
   });
+}
+
+export const formatDateToShortDate = (date: string) => {
+  try {
+    return new Date(date).toLocaleString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    }).replace(/\s/g, '-')
+  } catch (error) {
+    return '';
+  }
 }

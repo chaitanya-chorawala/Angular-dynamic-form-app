@@ -3,8 +3,8 @@
     <div class="col-md-12">
       <div class="card shadow-effect bg-secondary-theme">
         <div class="card-body text-center">
-          <h3 class="text-primary-theme">{{formStatus}} FORM DETAIL</h3>
-          <p>You can {{formStatus | lowercase}} person detail here.</p>
+          <h3 class="text-primary-theme">{{ formStatus }} FORM DETAIL</h3>
+          <p>You can {{ formStatus | lowercase }} person detail here.</p>
         </div>
       </div>
     </div>
@@ -24,23 +24,34 @@
                 <div class="form-group mb-2">
                   <label>Name</label>
                   <input type="text" class="form-control" formControlName="name" placeholder="*Name" />
-                  <div *ngIf="contactForm.get('name')?.hasError('required')" class="text-danger">Required field</div>
+                  <div *ngIf="contactForm.get('name')?.hasError('required')" class="text-danger">
+                    Required field
+                  </div>
                 </div>
               </div>
               <div class="col-sm-12 col-md-3">
                 <div class="form-group mb-2">
                   <label>Occupation</label>
-                  <select class="form-select" formControlName="occupation" (change)="MainPersonOccupationChange($event)">
+                  <select class="form-select" formControlName="occupation"
+                    (change)="MainPersonOccupationChange($event)">
                     <option value="">--SELECT--</option>
-                    <option *ngFor="let res of occupationValues" [ngValue]="res.key">{{res.val}}</option>
+                    <option *ngFor="let res of occupationValues" [ngValue]="res.key">
+                      {{ res.val }}
+                    </option>
                   </select>
-                  <div *ngIf="contactForm.get('occupation')?.hasError('required')" class="text-danger">Required field</div>
+                  <div *ngIf="contactForm.get('occupation')?.hasError('required')" class="text-danger">
+                    Required field
+                  </div>
                 </div>
               </div>
-              <div class="col-sm-12 col-md-3" *ngIf="getMainPersonControl('occupation').value === 'STUDENT' || getMainPersonControl('occupation').value === 'OTHER'">
+              <div class="col-sm-12 col-md-3" *ngIf="
+                  getMainPersonControl('occupation').value === 'STUDENT' ||
+                  getMainPersonControl('occupation').value === 'OTHER'
+                ">
                 <div class="form-group mb-2">
                   <label>Occupation Detail</label>
-                  <input type="text" class="form-control" formControlName="occupationDetail" placeholder="(Student stream/standard/other)" />
+                  <input type="text" class="form-control" formControlName="occupationDetail"
+                    placeholder="(Student stream/standard/other)" />
                 </div>
               </div>
             </div>
@@ -53,7 +64,9 @@
                     <option ngValue="Male">Male</option>
                     <option ngValue="Female">Female</option>
                   </select>
-                  <div *ngIf="contactForm.get('gender')?.hasError('required')" class="text-danger">Required field</div>
+                  <div *ngIf="contactForm.get('gender')?.hasError('required')" class="text-danger">
+                    Required field
+                  </div>
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
@@ -64,7 +77,9 @@
                     <option ngValue="No">No</option>
                     <option ngValue="Yes">Yes</option>
                   </select>
-                  <div *ngIf="contactForm.get('isMarried')?.hasError('required')" class="text-danger">Required field</div>
+                  <div *ngIf="contactForm.get('isMarried')?.hasError('required')" class="text-danger">
+                    Required field
+                  </div>
                 </div>
               </div>
             </div>
@@ -72,15 +87,27 @@
               <div class="col-sm-12 col-md-6">
                 <div class="form-group mb-2">
                   <label>DOB</label>
-                  <input type="date" class="form-control" formControlName="dob" placeholder="*DOB" (change)="SetMainPersonDOB($event)" />
-                  <div *ngIf="contactForm.get('dob')?.hasError('required')" class="text-danger">Required field</div>
+                  <input type="date" class="form-control" formControlName="dob" placeholder="*DOB"
+                    (change)="SetMainPersonDOB($event)" />
+                  <div *ngIf="contactForm.get('dob')?.hasError('required')" class="text-danger">
+                    Required field
+                  </div>
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
                 <div class="form-group mb-2">
                   <label>Age</label>
-                  <input type="text" class="form-control" formControlName="age" placeholder="*Age"/>
-                  <div *ngIf="contactForm.get('age')?.hasError('required')" class="text-danger">Required field</div>
+                  <input type="number" class="form-control" formControlName="age" placeholder="*Age"
+                    [appNumberOnly]="3" />
+                  <div *ngIf="contactForm.get('age')?.hasError('required')" class="text-danger">
+                    Required field
+                  </div>
+                  <div *ngIf="
+                      contactForm.get('age')?.hasError('min') ||
+                      contactForm.get('age')?.hasError('max')
+                    " class="text-danger">
+                    Enter valid age
+                  </div>
                 </div>
               </div>
             </div>
@@ -88,8 +115,17 @@
               <div class="col-sm-12 col-md-6">
                 <div class="form-group mb-2">
                   <label>Mobile No</label>
-                  <input type="text" class="form-control" formControlName="mobileNo" placeholder="*Mobile No" />
-                  <div *ngIf="contactForm.get('mobileNo')?.hasError('required')" class="text-danger">Required field</div>
+                  <input type="number" class="form-control" formControlName="mobileNo" placeholder="*Mobile No"
+                    [appNumberOnly]="10" />
+                  <div *ngIf="contactForm.get('mobileNo')?.hasError('required')" class="text-danger">
+                    Required field
+                  </div>
+                  <div *ngIf="
+                      contactForm.get('mobileNo')?.hasError('min') ||
+                      contactForm.get('mobileNo')?.hasError('max')
+                    " class="text-danger">
+                    Enter 10 digit numbers only
+                  </div>
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
@@ -97,9 +133,13 @@
                   <label>Area</label>
                   <select class="form-select" formControlName="area">
                     <option value="">--SELECT--</option>
-                    <option *ngFor="let res of areaValues" [ngValue]="res.key">{{res.val}}</option>
+                    <option *ngFor="let res of areaValues" [ngValue]="res.key">
+                      {{ res.val }}
+                    </option>
                   </select>
-                  <div *ngIf="contactForm.get('area')?.hasError('required')" class="text-danger">Required field</div>
+                  <div *ngIf="contactForm.get('area')?.hasError('required')" class="text-danger">
+                    Required field
+                  </div>
                 </div>
               </div>
               <div class="col-md-12">
@@ -107,7 +147,9 @@
                   <label>Address</label>
                   <textarea class="form-control" cols="30" rows="3" formControlName="address"
                     placeholder="*Address"></textarea>
-                  <div *ngIf="contactForm.get('address')?.hasError('required')" class="text-danger">Required field</div>
+                  <div *ngIf="contactForm.get('address')?.hasError('required')" class="text-danger">
+                    Required field
+                  </div>
                 </div>
               </div>
             </div>
@@ -122,7 +164,7 @@
             <div class="col-md-12">
               <div class="card shadow-effect">
                 <div class="card-header">
-                  <h4 class="card-title">Person {{(personIndex + 1)}}</h4>
+                  <h4 class="card-title">Person {{ personIndex + 1 }}</h4>
                 </div>
                 <div class="card-body">
                   <div class="row">
@@ -131,9 +173,17 @@
                         <label>Relation With Main Person</label>
                         <select class="form-select" formControlName="relationWithMainPerson">
                           <option value="">--SELECT--</option>
-                          <option *ngFor="let res of relationValues" [ngValue]="res.key">{{res.val}}</option>
+                          <option *ngFor="let res of relationValues" [ngValue]="res.key">
+                            {{ res.val }}
+                          </option>
                         </select>
-                        <div *ngIf="person.get('relationWithMainPerson')?.hasError('required')" class="text-danger">Required field</div>
+                        <div *ngIf="
+                            person
+                              .get('relationWithMainPerson')
+                              ?.hasError('required')
+                          " class="text-danger">
+                          Required field
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -142,24 +192,37 @@
                       <div class="form-group mb-2">
                         <label>Name</label>
                         <input type="text" class="form-control" formControlName="name" placeholder="*Name" />
-                        <div *ngIf="person.get('name')?.hasError('required')" class="text-danger">Required field</div>
+                        <div *ngIf="person.get('name')?.hasError('required')" class="text-danger">
+                          Required field
+                        </div>
                       </div>
                     </div>
                     <div class="col-sm-12 col-md-3">
                       <div class="form-group mb-2">
                         <label>Occupation</label>
-                        <select class="form-select" formControlName="occupation" (change)="MemberPersonOccupationChange($event, personIndex)">
+                        <select class="form-select" formControlName="occupation" (change)="
+                            MemberPersonOccupationChange($event, personIndex)
+                          ">
                           <option value="">--SELECT--</option>
-                          <option *ngFor="let res of occupationValues" [ngValue]="res.key">{{res.val}}</option>
+                          <option *ngFor="let res of occupationValues" [ngValue]="res.key">
+                            {{ res.val }}
+                          </option>
                         </select>
-                        <div *ngIf="person.get('occupation')?.hasError('required')" class="text-danger">Required field</div>
+                        <div *ngIf="person.get('occupation')?.hasError('required')" class="text-danger">
+                          Required field
+                        </div>
                       </div>
                     </div>
-                    <div class="col-sm-12 col-md-3" *ngIf="getMemberPersonControl('occupation',personIndex).value === 'STUDENT' || getMemberPersonControl('occupation',personIndex).value === 'OTHER'">
+                    <div class="col-sm-12 col-md-3" *ngIf="
+                        getMemberPersonControl('occupation', personIndex)
+                          .value === 'STUDENT' ||
+                        getMemberPersonControl('occupation', personIndex)
+                          .value === 'OTHER'
+                      ">
                       <div class="form-group mb-2">
                         <label>Occupation Detail</label>
                         <input type="text" class="form-control" formControlName="occupationDetail"
-                        placeholder="(Student stream/standard/other)" />
+                          placeholder="(Student stream/standard/other)" />
                       </div>
                     </div>
                   </div>
@@ -172,10 +235,19 @@
                           <option ngValue="Male">Male</option>
                           <option ngValue="Female">Female</option>
                         </select>
-                        <div *ngIf="person.get('gender')?.hasError('required')" class="text-danger">Required field</div>
+                        <div *ngIf="person.get('gender')?.hasError('required')" class="text-danger">
+                          Required field
+                        </div>
                       </div>
                     </div>
-                    <div class="col-sm-12 col-md-6" *ngIf="unMarriedRelationValues.includes(getMemberPersonControl('relationWithMainPerson',personIndex).value)">
+                    <div class="col-sm-12 col-md-6" *ngIf="
+                        unMarriedRelationValues.includes(
+                          getMemberPersonControl(
+                            'relationWithMainPerson',
+                            personIndex
+                          ).value
+                        )
+                      ">
                       <div class="form-group mb-2">
                         <label>Is Married?</label>
                         <select class="form-select" formControlName="isMarried">
@@ -183,7 +255,9 @@
                           <option ngValue="No">No</option>
                           <option ngValue="Yes">Yes</option>
                         </select>
-                        <div *ngIf="person.get('isMarried')?.hasError('required')" class="text-danger">Required field</div>
+                        <div *ngIf="person.get('isMarried')?.hasError('required')" class="text-danger">
+                          Required field
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -191,15 +265,24 @@
                     <div class="col-sm-12 col-md-6">
                       <div class="form-group mb-2">
                         <label>DOB</label>
-                        <input type="date" class="form-control" formControlName="dob" placeholder="*DOB" (change)="SetMemberPersonDOB($event, personIndex)" />
-                        <div *ngIf="person.get('dob')?.hasError('required')" class="text-danger">Required field</div>
+                        <input type="date" class="form-control" formControlName="dob" placeholder="*DOB"
+                          (change)="SetMemberPersonDOB($event, personIndex)" />
+                        <div *ngIf="person.get('dob')?.hasError('required')" class="text-danger">
+                          Required field
+                        </div>
                       </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
                       <div class="form-group mb-2">
                         <label>Age</label>
-                        <input type="text" class="form-control" formControlName="age" placeholder="*Age"/>
-                        <div *ngIf="person.get('age')?.hasError('required')" class="text-danger">Required field</div>
+                        <input type="number" class="form-control" formControlName="age" placeholder="*Age"
+                          [appNumberOnly]="3" />
+                        <div *ngIf="person.get('age')?.hasError('required')" class="text-danger">
+                          Required field
+                        </div>
+                        <div *ngIf="person.get('age')?.hasError('min') || person.get('age')?.hasError('max')" class="text-danger">
+                          Enter valid age
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -219,20 +302,21 @@
     <div class="row mt-4 mb-4">
       <div class="col-md-12 text-center">
         <div class="btn-group" role="group">
-        <button type="button" class="btn btn-success px-4 btn-theme" (click)="addPerson()">
-          ADD PERSON
-        </button>
-        <button type="submit" class="btn btn-secondary bg-theme px-4 btn-theme-primary w-100" [disabled]="contactForm.invalid">
-          SUBMIT FORM<br>
-          <span>Total family member: {{personArray().length}}</span>
-        </button>
-        <button type="button" class="btn btn-warning px-4 btn-theme" (click)="resetForm()">
-          CLEAR FORM
-        </button>
-        <button *ngIf="formId" type="button" class="btn btn-secondary px-4 btn-theme" routerLink="/admin/forms">
-          GO BACK
-        </button>
-      </div>
+          <button type="button" class="btn btn-success px-4 btn-theme" (click)="addPerson()">
+            ADD PERSON
+          </button>
+          <button type="submit" class="btn btn-secondary bg-theme px-4 btn-theme-primary w-100"
+            [disabled]="contactForm.invalid">
+            SUBMIT FORM<br />
+            <span>Total family member: {{ personArray().length }}</span>
+          </button>
+          <button type="button" class="btn btn-warning px-4 btn-theme" (click)="resetForm()">
+            CLEAR FORM
+          </button>
+          <button *ngIf="formId" type="button" class="btn btn-secondary px-4 btn-theme" routerLink="/admin/forms">
+            GO BACK
+          </button>
+        </div>
       </div>
     </div>
   </form>

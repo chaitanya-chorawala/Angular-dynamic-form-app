@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, DocumentReference } from '@angular/fire/compat/firestore';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, catchError, from, map } from 'rxjs';
 import {
@@ -7,37 +7,22 @@ import {
   IExportForms,
   IMainPerson
 } from '../model/contactus';
+import { formatDateToShortDate } from '../shared/utilities';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContactusService {
-  constructor(private afs: AngularFirestore, private toastr: ToastrService) {}
+  constructor(private afs: AngularFirestore) {}
 
-  add(data: IMainPerson) {
-    from(this.afs.collection('contactus').add(data))
-      .pipe(catchError((err) => 'Something went wrong!'))
-      .subscribe({
-        next: (val) => this.toastr.success('Form submitted!', 'Success'),
-        error: (err) => this.toastr.error(err, 'Error'),
-      });
+  add(data: IMainPerson): Observable<string | DocumentReference<unknown>> {
+    return from(this.afs.collection('contactus').add(data))
+      .pipe(catchError((err) => 'Something went wrong!'));      
   }
 
-  update(data: IMainPerson, id: string) {
-    from(this.afs.doc(`contactus/${id}`).update(data))
-      .pipe(catchError((err) => 'Something went wrong!'))
-      .subscribe({
-        next: (val) => this.toastr.success('Form submitted!', 'Success'),
-        error: (err) => this.toastr.error(err, 'Error'),
-      });
-  }
-
-  doContactUs(data: IMainPerson, id?: string | null | undefined) {
-    if (id) {
-      this.update(data, id);
-    } else {
-      this.add(data);
-    }
+  update(data: IMainPerson, id: string): Observable<string | void> {
+    return from(this.afs.doc(`contactus/${id}`).update(data))
+      .pipe(catchError((err) => 'Something went wrong!'));      
   }
 
   loadData(): Observable<IContactusResult[]> {
@@ -79,7 +64,7 @@ export class ContactusService {
                 occupationDetail: res.occupationDetail,
                 address: res.address,
                 area: res.area,
-                dob: res.dob,
+                dob: formatDateToShortDate(res.dob),
                 age: res.age,
                 lastModifiedAt: res.createdAtDateTime
               },
@@ -97,7 +82,7 @@ export class ContactusService {
                 occupationDetail: res.occupationDetail,
                 address: '',
                 area: '',
-                dob: res.dob,
+                dob: formatDateToShortDate(res.dob),
                 age: res.age,
                 lastModifiedAt: ''
               } as IExportForms;
@@ -122,12 +107,8 @@ export class ContactusService {
       );
   }
 
-  deleteMessage(id: string) {
-    from(this.afs.doc(`contactus/${id}`).delete())
-      .pipe(catchError((err) => 'Something went wrong!'))
-      .subscribe({
-        next: (val) => this.toastr.success('Form delete successfully!'),
-        error: (err) => this.toastr.error(err, 'Error'),
-      });
+  deleteMessage(id: string): Observable<string | void> {
+    return from(this.afs.doc(`contactus/${id}`).delete())
+      .pipe(catchError((err) => 'Something went wrong!'));
   }
 }

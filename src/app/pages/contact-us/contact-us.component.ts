@@ -1,23 +1,40 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, switchMap } from 'rxjs';
+import { Subscription, of, switchMap } from 'rxjs';
 import { IMainPerson, IMember } from '../../model/contactus';
 import { ContactusService } from '../../services/contactus.service';
-import { areaValues, formatDateToDDMMYYYYHHMMSSFFF, formatDateToLocale, getAge, occupationValues, relationValues } from '../../shared/utilities';
+import {
+  areaValues,
+  formatDateToDDMMYYYYHHMMSSFFF,
+  formatDateToLocale,
+  getAge,
+  occupationValues,
+  relationValues,
+} from '../../shared/utilities';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-contact-us',
   templateUrl: './contact-us.component.html',
   styleUrl: './contact-us.component.css',
 })
-export class ContactUsComponent implements OnInit, AfterViewInit {
+export class ContactUsComponent implements OnInit, OnDestroy {
   contactForm!: FormGroup;
   formId?: string | null;
   formStatus: string = 'ADD';
+  subs: Subscription = new Subscription();
 
   relationValues = relationValues;
-  unMarriedRelationValues = relationValues.filter(x => !x.isMarried).map(x => x.key);
+  unMarriedRelationValues = relationValues
+    .filter((x) => !x.isMarried)
+    .map((x) => x.key);
   occupationValues = occupationValues;
   areaValues = areaValues;
 
@@ -25,7 +42,8 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private contactusService: ContactusService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   personArray(): FormArray {
@@ -44,33 +62,44 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
     this.getMainPersonControl('age').setValue(getAge($event.target.value));
   }
 
-  SetMemberPersonDOB($event:any, index: number) {
-    this.getMemberPersonControl('age',index).setValue(getAge($event.target.value));
+  SetMemberPersonDOB($event: any, index: number) {
+    this.getMemberPersonControl('age', index).setValue(
+      getAge($event.target.value)
+    );
   }
 
   MainPersonOccupationChange($event: any) {
-    if(this.getMainPersonControl('occupation').value !== 'STUDENT' || this.getMainPersonControl('occupation').value !== 'OTHER')
-    {this.getMainPersonControl('occupationDetail').setValue('');}
+    if (
+      this.getMainPersonControl('occupation').value !== 'STUDENT' ||
+      this.getMainPersonControl('occupation').value !== 'OTHER'
+    ) {
+      this.getMainPersonControl('occupationDetail').setValue('');
+    }
   }
 
   MemberPersonOccupationChange($event: any, index: number) {
-    if(this.getMemberPersonControl('occupation',index).value !== 'STUDENT' || this.getMainPersonControl('occupation').value !== 'OTHER')
-    {this.getMemberPersonControl('occupationDetail',index).setValue('');}
+    if (
+      this.getMemberPersonControl('occupation', index).value !== 'STUDENT' ||
+      this.getMainPersonControl('occupation').value !== 'OTHER'
+    ) {
+      this.getMemberPersonControl('occupationDetail', index).setValue('');
+    }
   }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap
-      .pipe(
-        switchMap((param) => {
-          this.formId = param.get('id');
-          return this.formId
-            ? this.contactusService.loadById(this.formId)
-            : of(undefined);
-        })
-      )
-      .subscribe((res) => this.createContactForm(res));
+    this.subs.add(
+      this.activatedRoute.paramMap
+        .pipe(
+          switchMap((param) => {
+            this.formId = param.get('id');
+            return this.formId
+              ? this.contactusService.loadById(this.formId)
+              : of(undefined);
+          })
+        )
+        .subscribe((res) => this.createContactForm(res))
+    );
   }
-  ngAfterViewInit(): void {}
 
   createContactForm(res?: IMainPerson): void {
     this.contactForm = this.fb.group({
@@ -80,13 +109,23 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
       occupation: [res?.occupation || '', Validators.required],
       occupationDetail: [res?.occupationDetail || ''],
       dob: [res?.dob || '', Validators.required],
-      age: [res?.age || '', Validators.required],
-      mobileNo: [res?.mobileNo || '', Validators.required],
+      age: [
+        res?.age || '',
+        [Validators.required, Validators.min(0), Validators.max(200)],
+      ],
+      mobileNo: [
+        res?.mobileNo || '',
+        [
+          Validators.required,
+          Validators.min(1000000000),
+          Validators.max(9999999999),
+        ],
+      ],
       area: [res?.area || '', [Validators.required]],
       address: [res?.address || '', [Validators.required]],
       family: this.fb.array([]),
       createdAt: '',
-      createdAtDateTime: ''
+      createdAtDateTime: '',
     });
 
     if (res) {
@@ -95,9 +134,6 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
         this.personArray().push(this.createPerson(x));
       });
     }
-
-    console.log(this.contactForm.getRawValue() as IMainPerson);
-
   }
 
   createPerson(res?: IMember): FormGroup {
@@ -108,11 +144,11 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
         Validators.required,
       ],
       gender: [res?.gender || '', Validators.required],
-      isMarried: [res?.isMarried || '', Validators.required],
+      isMarried: [res?.isMarried || ''],
       occupation: [res?.occupation || '', Validators.required],
       occupationDetail: [res?.occupationDetail || ''],
       dob: [res?.dob || ''],
-      age: [res?.age || ''],
+      age: [res?.age || '', [Validators.min(0), Validators.max(200)]],
     });
   }
 
@@ -129,26 +165,52 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
     const data = this.contactForm.getRawValue() as IMainPerson;
     data.createdAt = formatDateToDDMMYYYYHHMMSSFFF();
     data.createdAtDateTime = formatDateToLocale();
-    this.contactusService.doContactUs(data, this.formId);
-    this.doReset();
+
+    if (this.formId) {
+      this.subs.add(
+        this.contactusService.update(data, this.formId).subscribe({
+          next: (val) => {
+            this.toastr.success('Form submitted!', 'Success');
+            this.doReset();
+          },
+          error: (err) => this.toastr.error(err, 'Error'),
+        })
+      );
+    } else {
+      this.subs.add(
+        this.contactusService.add(data).subscribe({
+          next: (val) => {
+            this.toastr.success('Form submitted!', 'Success');
+            this.doReset();
+          },
+          error: (err) => this.toastr.error(err, 'Error'),
+        })
+      );
+    }
   }
 
   doReset() {
     this.formId = undefined;
-    this.contactForm.reset();
+    this.contactForm.reset({
+      gender: '',
+      isMarried: '',
+      occupation: '',
+      area: '',
+    });
     this.personArray().clear();
 
     if (this.formStatus === 'EDIT') {
       this.router.navigateByUrl('/admin/forms');
     }
-
-    console.log(this.contactForm.getRawValue() as IMainPerson);
-
   }
 
   resetForm() {
     if (confirm('Are you sure to clear?')) {
       this.doReset();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }
